@@ -1,8 +1,29 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const http = require('http');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+var app = express();
+
+/**
+ * Set port
+ */
+
+const PORT = process.env.PORT || '3000';
+app.set('port', PORT);
+
+/**
+ * Setup server and socket.io
+ */
+
+const server = http.createServer(app);
+const io = require('socket.io')(server);
+
+/**
+ * Setup mongoose
+ */
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/bookthyshow');
@@ -13,15 +34,25 @@ db.once('open', function() {
 	console.log("mongoDB connected");
 });
 
-var app = express();
+/**
+ * Setup middlewares
+ */
 
 app.use(logger('dev'), bodyParser.json(), bodyParser.urlencoded({ extended: false }), cookieParser());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-// require all routes
+/**
+ * Routes used
+ */
+
 app.use('/', require('./routes/index'));
-app.use('/movies', require('./routes/movies'));
+app.use('/api/movies', require('./routes/movies').configure(io));
+app.use('/api/cities', require('./routes/cities').configure(io));
+app.use('/api/theatres', require('./routes/theatres').configure(io));
+
+/**
+ *  404 and error handlers
+ */
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -32,13 +63,13 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
-
 	// send the error
 	res.status(err.status || 500);
 	res.json(err);
 });
 
-module.exports = app;
+/**
+ * Listen to server 
+ */
+
+server.listen(PORT);

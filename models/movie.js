@@ -2,22 +2,36 @@ var mongoose = require('mongoose');
 
 var movieSchema = mongoose.Schema({
 	Title: {
-		type: String
+		type: String,
+		required: true
+	},
+	Year: {
+		type: String,
+		required: true
+	},
+	Plot: {
+		type: String,
+		required: true
 	},
 	Released: {
-		type: String
+		type: String,
+		required: true
 	},
 	Runtime: {
-		type: String
+		type: String,
+		required: true
 	},
 	Genre: {
-		type: String
+		type: String,
+		required: true
 	},
 	imdbID: {
-		type: String
+		type: String,
+		required: true
 	},
 	Poster: {
-		type: String
+		type: String,
+		required: true
 	}
 });
 

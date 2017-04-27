@@ -1,39 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie');
+const Theatre = require('../models/theatres');
 
 module.exports.configure = function(io){
 	router.post('/', function(req, res, next){
-		var newMovie = new Movie(req.body);
+		var newTheatre = new Theatre(req.body);
 
-		newMovie.save(function(err, movie){
+		newTheatre.save(function(err, theatre){
 			if(err){
 				next(err);
 			} else {
-				io.emit("POST /api/movies", movie);
+				io.emit("POST /api/theatres", theatre);
 				res.status(200);
-				res.json(movie);
+				res.json(theatre);
 			}
 		});
 	});
 
 	router.get('/', function(req, res, next){
-		Movie.find({}, function(err, movies){
+		Theatre.find({}, function(err, theatres){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
-				res.json(movies);
+				res.json(theatres);
 			}
 		});
 	});
 
 	router.delete('/:id', function(req, res, next){
-		Movie.remove({ _id: req.params.id }, function(err){
+		Theatre.remove({ _id: req.params.id }, function(err){
 			if(err){
 				next(err);
 			} else {
-				io.emit("DELETE /api/movies", req.params.id);
+				io.emit("DELETE /api/theatres", req.params.id);
 				res.status(200);
 				res.send("deleted");
 			}
