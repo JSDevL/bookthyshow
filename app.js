@@ -26,7 +26,7 @@ const io = require('socket.io')(server);
  */
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/bookthyshow');
+mongoose.connect('mongodb://127.0.0.1/bookthyshow');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -62,10 +62,10 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
 	// send the error
 	res.status(err.status || 500);
-	res.json(err);
+	return res.json(err);
 });
 
 /**

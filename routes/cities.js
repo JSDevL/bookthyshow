@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const City = require('../models/cities');
+
+const Theatre = require('../models/theatre');
+const City = require('../models/city');
 
 module.exports.configure = function(io){
 	router.post('/', function(req, res, next){
@@ -18,7 +20,7 @@ module.exports.configure = function(io){
 	});
 
 	router.get('/', function(req, res, next){
-		City.find({}, function(err, cities){
+		City.find({}).exec(function(err, cities){
 			if(err){
 				next(err);
 			} else {
@@ -29,13 +31,26 @@ module.exports.configure = function(io){
 	});
 
 	router.delete('/:id', function(req, res, next){
-		City.remove({ _id: req.params.id }, function(err){
-			if(err){
-				next(err);
+		/**
+		 * To delete a city all theatres bound to this city must be deleted first
+		 */
+
+		Theatre.find({ city: req.params.id }).exec( function(err, theatres){
+			if(theatres.length){
+				let err = new Error("To delete a city all theatres bound to this city must be deleted first");
+				err.name = "city bounded";
+				err.status = 400;
+				return next(err);
 			} else {
-				io.emit("DELETE /api/cities", req.params.id);
-				res.status(200);
-				res.send("deleted");
+				City.remove({ _id: req.params.id }, function(err){
+					if(err){
+						next(err);
+					} else {
+						io.emit("DELETE /api/cities", req.params.id);
+						res.status(200);
+						res.send("deleted");
+					}
+				});
 			}
 		});
 	});

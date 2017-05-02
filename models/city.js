@@ -5,8 +5,14 @@ var citySchema = mongoose.Schema({
 		type: String,
 		required: true,
 		unique: true,
-		uppercase: true,
+		trim: true
 	}
+});
+
+citySchema.pre('save', function (next) {
+	// capitalize
+	this.name = this.name.charAt(0).toUpperCase() + this.name.slice(1);
+	next();
 });
 
 module.exports = mongoose.model("cities", citySchema);

@@ -32,7 +32,19 @@ var movieSchema = mongoose.Schema({
 	Poster: {
 		type: String,
 		required: true
-	}
+	},
+	theatres: [{
+		theatre: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'theatres'
+		},
+		dates: [{
+			type: String
+		}],
+		timings: [{
+			type: String
+		}]
+	}]
 });
 
 module.exports = mongoose.model("movie", movieSchema);
