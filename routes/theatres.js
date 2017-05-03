@@ -36,35 +36,17 @@ module.exports.configure = function(io){
 		});
 	});
 
-	router.post('/:theatreID/movies/:movieID', function(req, res, next){
-		Theatre.findByIdAndUpdate(req.params.theatreID, {
-			$push: {
-				movies: {
-					movie: req.params.movieID,
-					dates: req.body.dates,
-					timings: req.body.timings
-				}
+	router.put('/:id/movies', function(req, res, next){
+		Theatre.findByIdAndUpdate(req.params.id, {
+			$set: {
+				movies: req.body
 			}
 		}, function(err){
 			if(err){
 				next(err);
 			} else {
-				Movie.findByIdAndUpdate(req.params.movieID, {
-					$push: {
-						theatres: {
-							theatre: req.params.theatreID,
-							dates: req.body.dates,
-							timings: req.body.timings
-						}
-					}
-				}, function(err){
-					if(err){
-						next(err);
-					} else {
-						res.status(200);
-						res.send("updated");
-					}
-				});
+				res.status(200);
+				res.send("updated");
 			}
 		});
 	});

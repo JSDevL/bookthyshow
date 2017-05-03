@@ -28,6 +28,21 @@ module.exports.configure = function(io){
 		});
 	});
 
+	router.put('/:id/theatres', function(req, res, next){
+		Movie.findByIdAndUpdate(req.params.id, {
+			$set: {
+				theatres: req.body
+			}
+		}, function(err){
+			if(err){
+				next(err);
+			} else {
+				res.status(200);
+				res.send("updated");
+			}
+		});
+	});
+
 	router.delete('/:id', function(req, res, next){
 		Movie.remove({ _id: req.params.id }, function(err){
 			if(err){
