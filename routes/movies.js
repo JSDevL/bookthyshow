@@ -28,6 +28,17 @@ module.exports.configure = function(io){
 		});
 	});
 
+	router.get('/populated', function(req, res, next){
+		Movie.find({}).populate('theatres.theatre').exec( function(err, movies){
+			if(err){
+				next(err);
+			} else {
+				res.status(200);
+				res.json(movies);
+			}
+		});
+	});
+
 	router.put('/:id/theatres', function(req, res, next){
 		Movie.findByIdAndUpdate(req.params.id, {
 			$set: {

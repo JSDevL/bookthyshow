@@ -11,7 +11,7 @@ var app = express();
  * Set port
  */
 
-const PORT = process.env.PORT || '3000';
+const PORT = process.env.PORT || '8080';
 app.set('port', PORT);
 
 /**
@@ -72,4 +72,6 @@ app.use(function(err, req, res, next) {
  * Listen to server 
  */
 
-server.listen(PORT);
+server.listen(PORT, function(){
+	console.log('app running on port: ' + PORT);
+});
