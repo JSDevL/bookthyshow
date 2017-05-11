@@ -30,6 +30,17 @@ module.exports.configure = function(io){
 		});
 	});
 
+	router.get('/:id', function(req, res, next){
+		City.findById(req.params.id).exec(function(err, city){
+			if(err){
+				next(err);
+			} else {
+				res.status(200);
+				res.json(city);
+			}
+		});
+	});
+
 	router.delete('/:id', function(req, res, next){
 		/**
 		 * To delete a city all theatres bound to this city must be deleted first

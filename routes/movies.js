@@ -39,6 +39,17 @@ module.exports.configure = function(io){
 		});
 	});
 
+	router.get('/:id', function(req, res, next){
+		Movie.findById(req.params.id).populate('theatres.theatre').exec(function(err, movie){
+			if(err){
+				next(err);
+			} else {
+				res.status(200);
+				res.json(movie);
+			}
+		});
+	});
+
 	router.put('/:id/theatres', function(req, res, next){
 		Movie.findByIdAndUpdate(req.params.id, {
 			$set: {
