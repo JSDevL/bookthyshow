@@ -405,7 +405,7 @@ var MovieSearchComponent = (function () {
         // initialise request options with params
         var requestOptions = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["c" /* RequestOptions */]();
         requestOptions.params = params;
-        this.http.get("http://api.myapifilms.com/imdb/idIMDB", requestOptions).subscribe(function (response) {
+        this.http.get("https://api.myapifilms.com/imdb/idIMDB", requestOptions).subscribe(function (response) {
             console.log(response.json());
         }, function (error) {
             console.log(error);
