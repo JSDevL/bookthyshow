@@ -12,7 +12,6 @@ module.exports.configure = function(io){
 			if(err){
 				next(err);
 			} else {
-				io.emit("POST /api/cities", movie);
 				res.status(200);
 				res.json(movie);
 			}
@@ -42,10 +41,7 @@ module.exports.configure = function(io){
 	});
 
 	router.delete('/:id', function(req, res, next){
-		/**
-		 * To delete a city all theatres bound to this city must be deleted first
-		 */
-
+		/* To delete a city all theatres bound to this city must be deleted first */
 		Theatre.find({ city: req.params.id }).exec( function(err, theatres){
 			if(theatres.length){
 				let err = new Error("To delete a city all theatres bound to this city must be deleted first");
@@ -57,7 +53,6 @@ module.exports.configure = function(io){
 					if(err){
 						next(err);
 					} else {
-						io.emit("DELETE /api/cities", req.params.id);
 						res.status(200);
 						res.send("deleted");
 					}
