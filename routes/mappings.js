@@ -1,50 +1,51 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie');
+
+const Mapping = require('../models/mapping');
 
 module.exports.configure = function(io){
 	router.post('/', function(req, res, next){
-		var newMovie = new Movie(req.body);
+		const newMapping = new Mapping(req.body);
 
-		newMovie.save(function(err, movie){
+		newMapping.save(function(err, mapping){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
-				res.json(movie);
+				res.json(mapping);
 			}
 		});
 	});
 
 	router.get('/', function(req, res, next){
-		Movie.find({}, function(err, movies){
+		Mapping.find({}).exec(function(err, mappings){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
-				res.json(movies);
+				res.json(mappings);
 			}
 		});
 	});
 
-	router.get('/:id', function(req, res, next){
-		Movie.findById(req.params.id).populate('theatres.theatre').exec(function(err, movie){
+	router.put('/:id', function(req, res, next){
+		Mapping.findByIdAndUpdate(req.params.id, req.body, { "new": true }, function(err, mapping){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
-				res.json(movie);
+				res.json(mapping);
 			}
 		});
 	});
 
 	router.delete('/:id', function(req, res, next){
-		Movie.remove({ _id: req.params.id }, function(err){
+		Mapping.findByIdAndRemove(req.params.id, function(err){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
-				res.send("deleted");
+				res.json("removed");
 			}
 		});
 	});

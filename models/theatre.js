@@ -11,22 +11,11 @@ var theatreSchema = mongoose.Schema({
 		required: true,
 		trim: true
 	},
-	city: {
+	city_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'cities'
-	},
-	movies: [{
-		movie: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'movies'
-		},
-		dates: [{
-			type: String
-		}],
-		timings: [{
-			type: String
-		}]
-	}]
+		ref: 'cities',
+		required: true
+	}
 });
 
 module.exports = mongoose.model("theatres", theatreSchema);

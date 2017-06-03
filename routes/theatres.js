@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const Theatre = require('../models/theatre');
-const Movie = require('../models/movie');
 
 module.exports.configure = function(io){
 	router.post('/', function(req, res, next){
@@ -26,27 +25,12 @@ module.exports.configure = function(io){
 	});
 
 	router.get('/', function(req, res, next){
-		Theatre.find({}).populate('city').exec( function(err, theatres){
+		Theatre.find({}).exec( function(err, theatres){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
 				res.json(theatres);
-			}
-		});
-	});
-
-	router.put('/:id/movies', function(req, res, next){
-		Theatre.findByIdAndUpdate(req.params.id, {
-			$set: {
-				movies: req.body
-			}
-		}, function(err){
-			if(err){
-				next(err);
-			} else {
-				res.status(200);
-				res.send("updated");
 			}
 		});
 	});

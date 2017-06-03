@@ -49,6 +49,8 @@ app.use('/', require('./routes/index'));
 app.use('/api/movies', require('./routes/movies').configure(io));
 app.use('/api/cities', require('./routes/cities').configure(io));
 app.use('/api/theatres', require('./routes/theatres').configure(io));
+app.use('/api/bookings', require('./routes/bookings').configure(io));
+app.use('/api/mappings', require('./routes/mappings').configure(io));
 
 /**
  *  404 and error handlers

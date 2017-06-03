@@ -1,50 +1,39 @@
 var mongoose = require('mongoose');
 
-var movieSchema = mongoose.Schema({
-	Title: {
+var genreSchema = new mongoose.Schema({ 
+	id: Number,
+	name: String
+});
+
+var movieSchema = new mongoose.Schema({
+	title: {
 		type: String,
 		required: true
 	},
-	Year: {
+	release_date: {
 		type: String,
 		required: true
 	},
-	Plot: {
+	poster_path: {
 		type: String,
 		required: true
 	},
-	Released: {
+	backdrop_path: {
 		type: String,
 		required: true
 	},
-	Runtime: {
+	genres: {
+		type: [genreSchema],
+		required: true
+	},
+	overview: {
 		type: String,
 		required: true
 	},
-	Genre: {
-		type: String,
+	runtime: {
+		type: Number,
 		required: true
-	},
-	imdbID: {
-		type: String,
-		required: true
-	},
-	Poster: {
-		type: String,
-		required: true
-	},
-	theatres: [{
-		theatre: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'theatres'
-		},
-		dates: [{
-			type: String
-		}],
-		timings: [{
-			type: String
-		}]
-	}]
+	}
 });
 
 module.exports = mongoose.model("movie", movieSchema);
