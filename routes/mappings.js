@@ -18,7 +18,7 @@ module.exports.configure = function(io){
 	});
 
 	router.get('/', function(req, res, next){
-		Mapping.find({}).exec(function(err, mappings){
+		Mapping.find(req.query).exec(function(err, mappings){
 			if(err){
 				next(err);
 			} else {
@@ -29,12 +29,21 @@ module.exports.configure = function(io){
 	});
 
 	router.put('/:id', function(req, res, next){
-		Mapping.findByIdAndUpdate(req.params.id, req.body, { "new": true }, function(err, mapping){
+		Mapping.findById(req.params.id, function(err, mapping){
 			if(err){
 				next(err);
 			} else {
-				res.status(200);
-				res.json(mapping);
+				mapping.dates = req.body.dates;
+				mapping.timings = req.body.timings;
+
+				mapping.save( function(err, updatedMapping){
+					if(err){
+						next(err);
+					} else {
+						res.status(200);
+						res.json(updatedMapping);
+					}
+				});
 			}
 		});
 	});

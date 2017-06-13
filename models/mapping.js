@@ -13,11 +13,11 @@ const mappingSchema = new mongoose.Schema({
 	},
 	dates: {
 		type: [Date],
-		required: true
+		required: [true, 'At least one date needs to be added.']
 	},
 	timings: {
 		type: [Date],
-		required: true
+		required: [true, 'At least one timing needs to be added.']
 	}
 });
 
