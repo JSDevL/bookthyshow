@@ -27,7 +27,7 @@ const io = require('socket.io')(server);
 
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://127.0.0.1/bookthyshow');
-mongoose.connect('mongodb://JSDevL:P@ssword@ds129402.mlab.com:29402/book-thy-show');
+mongoose.connect('mongodb://JSDevL2:Password123@ds129402.mlab.com:29402/book-thy-show');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
