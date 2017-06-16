@@ -18,12 +18,23 @@ module.exports.configure = function(io){
 	});
 
 	router.get('/', function(req, res, next){
-		Booking.find(req.query).exec( function(err, bookings){
+		Booking.find(req.query, {paymentDetails: 0}).exec( function(err, bookings){
 			if(err){
 				next(err);
 			} else {
 				res.status(200);
 				res.json(bookings);
+			}
+		});
+	});
+
+	router.get('/:id', function(req, res, next){
+		Booking.findById(req.params['id'], {paymentDetails: 0}).exec( function(err, booking){
+			if(err){
+				next(err);
+			} else {
+				res.status(200);
+				res.json(booking);
 			}
 		});
 	});
